@@ -1,0 +1,39 @@
+languageCode = "en-us"
+title = "What's Trending"
+theme = "hugo-material-docs"
+metadataformat = "yaml"
+canonifyurls = true
+
+[params]
+	description = "What's Trending"
+
+	logo = "images/asset-hub.svg"
+	favicon = "/images/asset-hub.png"
+
+[params.palette]
+    primary = "grey"
+    accent  = "teal"
+
+[params.font]
+    text = "Roboto"
+    code = "Roboto Mono"
+
+[blackfriday]
+	smartypants	= true
+	fractions = true
+	smartDashes = true
+	plainIDAnchors = true
+
+
+[[menu.main]]
+	name   = "What's Trending"
+	url    = "/"
+	weight = 10
+[[menu.main]]
+    name   = "Build and Run"
+    url    = "buildandrun/"
+    weight = 100
+[[menu.main]]
+    name   = "Demo"
+    url    = "demo/"
+    weight = 100

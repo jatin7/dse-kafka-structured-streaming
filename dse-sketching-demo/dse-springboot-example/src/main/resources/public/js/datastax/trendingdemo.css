@@ -1,0 +1,76 @@
+.borderless tr td {
+    border: none !important;
+    padding-left: 5px !important;
+    padding-right: 0px !important;
+    padding-top: 0px !important;
+    padding-bottom: 0px !important;
+
+}
+
+
+.secontainer{
+    width:924px;
+    position: absolute;
+    left:50%;
+    margin:0 0 0 -462px;
+
+}
+.table{
+    padding: 50px !important;
+}
+.setitle{
+    vertical-align:middle;
+    font-size:xx-large;
+    font-weight: lighter;
+
+}
+.sedselogo{
+    width:300px;
+}
+
+.semetricsdiv{
+    padding:25px;
+}
+.setitlediv{
+    padding-bottom:25px;
+
+}
+.setitle{
+    width:300px;
+}
+.setitleOptions{
+    padding-bottom:25px;
+    width:324px;
+    text-align:right;
+    vertical-align:bottom;
+    padding-bottom:0px;
+}
+.setitleOptionsImage{
+    width:45px;
+
+    padding-right:20px;
+}
+.setoptagstable{
+    font-size:medium;
+    font-weight: 400;
+    background-color:#272727;
+    width:200px
+}
+.seimagelinks{
+    height:30px;
+}
+
+.sepanel-title{
+    background-color:#f1f1f1;
+}
+
+.sepanel-colapse{
+    background-color:#272727
+}
+.seuniqueuserquerytimecell{
+   width:500px;
+}.searchitectureimage{
+     padding-left:3px;
+     padding-right:3px;
+     width:918px;
+ }

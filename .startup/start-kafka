@@ -1,0 +1,60 @@
+#!/bin/bash
+
+if [ "$1" == "-k" ]
+then
+ printf "killing kafka process...\n"
+ pkill -KILL -f "kafkaServer"
+ printf "killing zookeeper process...\n"
+ pkill -KILL -f "zookeeper"
+ sleep 2
+ exit 0
+fi
+
+KAFKA_VERSION="2.11-2.0.0"
+if [ ! -d "local/kafka_${KAFKA_VERSION}" ]
+then
+  mkdir -p local
+  pushd .
+  cd local
+  curl -O http://mirror.reverse.net/pub/apache/kafka/2.0.0/kafka_${KAFKA_VERSION}.tgz
+  tar -xzf kafka_${KAFKA_VERSION}.tgz
+  ln -s kafka_${KAFKA_VERSION} kafka
+  popd
+fi
+
+if await-listening-port "Zoo Keeper" TCP:2183
+then
+  printf "Zoo Keeper is already running at :2181\n";
+else
+  nohup local/kafka/bin/zookeeper-server-start.sh local/kafka/config/zookeeper.properties &
+  if ! await-listening-port "Zoo Keeper" TCP:2181 20
+  then
+   printf "Failed to bring up Zoo Keeper, exiting with status 2\n"
+   exit 2
+  fi
+fi
+
+if await-listening-port "Kafka Server" TCP:9092
+then
+ printf "Kafka Server is already running at :9092\n";
+else
+  nohup local/kafka/bin/kafka-server-start.sh local/kafka/config/server.properties &
+  if ! await-listening-port "Kafka Server" TCP:9092 20
+  then
+    printf "Failed to bring up Kafka Server, exiting with status 2\n"
+    exit 2
+  fi
+fi
+
+if [ -f "kafka-topics.txt" -a ! -f "kafka-topics.added" ]
+then
+  (
+  while read topic
+  do
+    add-kafka-topic $topic
+  done
+  ) < kafka-topics.txt
+  cp kafka-topics.txt kafka-topics.added
+fi
+
+

@@ -1,0 +1,10 @@
+#!/bin/bash
+if [ -x "/tmp/ebdse/ebdse" ]
+then PATH=/tmp/ebdse:$PATH
+fi
+
+if [ -x "${HOME}/IdeaProjects/ebdse/bin/ebdse" ]
+then PATH=${HOME}/IdeaProjects/ebdse/bin:$PATH
+fi
+
+ebdse run type=kafkaproducer topic=trade-events yaml=trades cycles=1000000 recycles=1000 newline=false cyclerate=4 format=inlinejson

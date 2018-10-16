@@ -1,0 +1,23 @@
+statements:
+ - |
+    \{
+      "trade": \{
+        "price": {price},
+        "quantity": {quantity},
+        "total": {total},
+        "client": "{client}",
+        "clientid":"{clientid}"
+      \}
+    \}
+bindings:
+# line: Template('{price:"{}",qty:"{}"}',Normal(10.0D,2.0D)->double,Normal(10000.0D,100.0D)->double);
+ price: Normal(10.0D,2.0D) -> double; Save('price') -> double;
+ quantity: Normal(10000.0D,100.0D); Add(-10000.0D); Save('quantity') -> double;
+  # -2857000,-285700,-200000,-152000,-123000,-15200,-5000,-2000,-4,-4,12500,21236,38225,123000,125000,200000,200000,285700,764500,8000000
+ #net_amount: Expr('price * quantity'); ToDouble();
+ total: Identity(); Expr('price * quantity') -> double;
+  # -7687500,-7687500,-6571100,-6571100,-65000,0,0,0,0,0,0,0,0,0,0,0,200000,650000,6571100,16000000
+ client: WeightedStrings('ABC_TEST:3;DFG_TEST:3;STG_TEST:14');
+ clientid: HashRange(0,1000000000) -> long;
+  # 5385,5385,5385,5385,5385,5385,5385,5385,5385,5385,5385,5385,5385,5385,22311,22311,22311,66788,66788,66788
+

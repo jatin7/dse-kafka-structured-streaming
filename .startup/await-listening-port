@@ -1,0 +1,59 @@
+#!/bin/bash
+#
+# USAGE: await-listening-port <description> <port> <tries> <delay>
+#   where
+#     <description> is a description of what is being waited for
+#     <port> is an lsof port specifier
+#     <tries> number of tries to check, default 1
+#     <delay> seconds to delay between checks default 1
+#
+# EXAMPLES:
+#   # simple check to see if 2181 is listening on TCP
+#   await-listening-port "Zoo Keeper" TCP:2181
+#   # wait up to 10 second for 0.0.0.0:2181 
+#   await-listening-port "Zoo Keeper" TCP:0.0.0.0:2181 10
+#
+# REQUIREMENTS:
+#
+# - lsof # This script will attempt to install this via sudo if necessary
+#    using lsb_release, or it will fail otherwise if lsof is not found
+#
+
+if ! which lsof >/dev/null 2>&1
+then
+ printf "# DEBUG: Attempting to install lsof\n" 1>&2
+ LSBTYPE=$(lsb_release -a)
+ if [[ ${LSBRELEASE} == *"Ubuntu"* ]]
+ then sudo apt-get install lsof
+ elif [[ ${LSBRELEASE} == *"Centos"* || ${LSBRELEASE} == *"Redhat"* ]]
+ then sudo yum install lsof
+ else
+  printf "# ERROR: Unable to determine system type, install lsof manually before proceeding\n";
+ fi 
+fi
+
+DESCRIPTION=${1:?You must provide a description first}
+SOCKSPEC=${2:?You must provide the port to watch for second}
+TRIES=${3:-1}
+DELAY=${4:-1}
+
+printf "# DEBUG: DESCRIPTION='%s' SOCKSPEC='%s' TRIES='%s' DELAY='%s'\n" "${DESCRIPTION}" "${SOCKSPEC}" "${TRIES}" "${DELAY}" 1>&2
+
+iteration=0
+while (( iteration < TRIES ))
+do
+  (( iteration++ ))
+  printf "# DEBUG: Attempt %s of %s to see %s at %s\n" "${iteration}" "${TRIES}" "${DESCRIPTION}" "${SOCKSPEC}"
+  lsof -t -Pi ${SOCKSPEC} >/dev/null 2>&1
+  result=$?
+  if (( result == 0 ))
+  then
+    printf "# INFO: FOUND %s at %s found after %s tries\n" "${DESCRIPTION}" "${SOCKSPEC}" "${iteration}"
+    exit 0
+  else
+    sleep ${DELAY}
+  fi
+done
+exit 1
+
+# lsof -Pi :2181 -sTCP:LISTEN -t

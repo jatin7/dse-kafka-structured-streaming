@@ -1,0 +1,6 @@
+[submodule "docsrc/themes/hugo-material-docs"]
+	path = docsrc/themes/hugo-material-docs
+	url = https://github.com/jshook/hugo-material-docs.git
+[submodule ".startup/managed-scripts"]
+	path = .startup/managed-scripts
+	url = http://github.com/riptano/assethub-scripts

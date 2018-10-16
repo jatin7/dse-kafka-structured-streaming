@@ -1,0 +1,13 @@
+#updatescripts
+hugo
+start-kafka
+setupTables.sh
+sparkHistory.sh
+installZeppelin.sh
+#streaming.sh
+streaming-trades
+trendingWebApp.sh
+restartOpsCenter.sh
+feed-kafka
+#add-kafka-topic
+#await-listening-port
